@@ -1,0 +1,23 @@
+[
+  {
+    "id": "p1",
+    "name": "Aurora Headphones",
+    "price": 149.99,
+    "imageUrl": "https://picsum.photos/id/1025/600/400",
+    "description": "Wireless over-ear headphones with ANC."
+  },
+  {
+    "id": "p2",
+    "name": "Nova Laptop",
+    "price": 999.99,
+    "imageUrl": "https://picsum.photos/id/1026/600/400",
+    "description": "High-performance laptop for creators."
+  },
+  {
+    "id": "p3",
+    "name": "Zephyr Mouse",
+    "price": 49.99,
+    "imageUrl": "https://picsum.photos/id/1027/600/400",
+    "description": "Ergonomic wireless mouse."
+  }
+]
