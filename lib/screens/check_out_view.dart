@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_shop/provider/cart_provider.dart';
 import 'package:my_shop/widgets/appbar/custom_appbar.dart';
+import 'package:my_shop/widgets/buttons/custom_primary_button.dart';
 import 'package:my_shop/widgets/inputs/custom_text_field.dart'
     show CustomTextField;
 
@@ -83,28 +84,14 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       const SizedBox(height: 32),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: CustomPrimaryButton(
+                          title: 'Place Order',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               ref.read(cartProvider.notifier).clearCart();
                               context.go('/success');
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            backgroundColor: theme.colorScheme.primary,
-                            foregroundColor: Colors.white,
-                          ),
-                          child: const Text(
-                            'Place Order',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                         ),
                       ),
                     ],

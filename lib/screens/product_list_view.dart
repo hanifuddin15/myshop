@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_shop/provider/product_provider.dart';
+import 'package:my_shop/widgets/no_data_widget.dart';
+import 'package:my_shop/widgets/shimmer/product_list_shimmer.dart';
 import '../widgets/product_card.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
@@ -116,23 +118,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                     .search(searchQuery);
                 if (filteredProducts.isEmpty) {
                   return SliverFillRemaining(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.search_off,
-                            size: 100,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'No products found',
-                            style: theme.textTheme.titleLarge,
-                          ),
-                        ],
-                      ),
-                    ),
+                    child: NoDataWidget(message: 'No Products Found'),
                   );
                 }
                 return SliverPadding(
@@ -205,37 +191,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: _buildShimmerItem(context),
+                  child: ProductListShimmer(),
                 ),
               ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShimmerItem(BuildContext context) {
-    final theme = Theme.of(context);
-    return Card.outlined(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: theme.colorScheme.outlineVariant, width: 1),
-      ),
-      color: theme.colorScheme.surface,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 1500),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              theme.colorScheme.surfaceContainerHighest.withAlpha(77),
-              theme.colorScheme.surfaceContainerHighest.withAlpha(179),
-              theme.colorScheme.surfaceContainerHighest.withAlpha(77),
-            ],
-            stops: const [0.0, 0.5, 1.0],
-          ),
         ),
       ),
     );
