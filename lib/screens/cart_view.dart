@@ -5,8 +5,8 @@ import 'package:my_shop/models/products.dart';
 import 'package:my_shop/provider/cart_provider.dart';
 import 'package:my_shop/provider/product_provider.dart';
 import 'package:my_shop/widgets/appbar/custom_appbar.dart';
-import 'package:my_shop/widgets/buttons/custom_primary_button.dart';
 import 'package:my_shop/widgets/no_data_widget.dart';
+import 'package:my_shop/widgets/product_widgets/cart_bottom_bar.dart';
 import 'package:my_shop/widgets/product_widgets/shop_cart.dart';
 import 'package:my_shop/widgets/shimmer/cart_shimmer.dart';
 
@@ -33,7 +33,7 @@ class CartScreen extends ConsumerWidget {
             );
           }
 
-          final total = ref.read(cartProvider.notifier).getTotal(products);
+          // final total = ref.read(cartProvider.notifier).getTotal(products);
 
           return Column(
             children: [
@@ -62,57 +62,7 @@ class CartScreen extends ConsumerWidget {
               ),
 
               // Total & Checkout
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(24),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 12,
-                      offset: const Offset(0, -4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                              ),
-                        ),
-                        Text(
-                          '\$${total.toStringAsFixed(2)}',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepPurpleAccent,
-                                fontSize: 18,
-                              ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomPrimaryButton(
-                        title: 'Proceed to Checkout',
-                        onPressed: () => context.go('/checkout'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              CartBottomBar(),
             ],
           );
         },
