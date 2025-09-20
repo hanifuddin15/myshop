@@ -7,7 +7,23 @@ class SuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Order Success')),
+      appBar: AppBar(
+        title: const Text(
+          'Order Success',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+            color: Colors.deepPurpleAccent,
+          ),
+        ),
+        leading: IconButton(
+          onPressed: () {
+            context.go('/');
+          },
+          icon: Icon(Icons.arrow_back_ios),
+        ),
+        centerTitle: true,
+      ),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
