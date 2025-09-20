@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_shop/screens/cart_view.dart' show CartScreen;
 import 'package:my_shop/screens/check_out_view.dart';
+import 'package:my_shop/screens/favourite_list_view.dart';
 import 'package:my_shop/screens/product_details_view.dart';
 import 'package:my_shop/screens/product_list_view.dart';
 import 'package:my_shop/screens/success_view.dart';
@@ -27,6 +28,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/success',
         builder: (context, state) => const SuccessScreen(),
+      ),
+      GoRoute(
+        path: '/favourite',
+        builder: (context, state) => const FavoriteListScreen(),
       ),
     ],
     redirect: (context, state) {
