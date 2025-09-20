@@ -19,6 +19,7 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
             .map((key, value) => MapEntry(key, value as int)),
       );
 
+  //======================= Add To Cart=============================//
   void addToCart(String id, BuildContext context) {
     try {
       final newCart = Map<String, int>.from(state);
@@ -34,6 +35,7 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
       );
     }
   }
+  //======================= Remove From Cart=============================//
 
   void removeFromCart(String id) {
     final newCart = Map<String, int>.from(state);
@@ -41,6 +43,7 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
     state = newCart;
     _saveCart();
   }
+  //======================= Update Cart Counts=============================//
 
   void updateQuantity(String id, int quantity) {
     if (quantity <= 0) {
@@ -52,6 +55,8 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
     state = newCart;
     _saveCart();
   }
+
+  //======================= Get Total=============================//
 
   double getTotal(List<Product> products) {
     return state.entries.fold<double>(0, (sum, entry) {
@@ -69,13 +74,16 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
       return sum + product.presentPrice * entry.value;
     });
   }
+  //======================= Clear Cart=============================//
 
   void clearCart() {
     state = {};
     _saveCart();
   }
 
+  //==========================Is Empty===========================//
   bool get isEmpty => state.isEmpty;
+  //======================= Save Cart Cart=============================//
 
   void _saveCart() => prefs.setString('cart', jsonEncode(state));
 }

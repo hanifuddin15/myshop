@@ -21,6 +21,7 @@ class ProductNotifier extends AsyncNotifier<List<Product>> {
     final repo = ref.watch(productRepositoryProvider);
     return repo.getProducts(_currentPage, _pageSize);
   }
+  //======================= Pull to Refresh =============================//
 
   Future<void> refresh() async {
     _currentPage = 1;
@@ -31,6 +32,7 @@ class ProductNotifier extends AsyncNotifier<List<Product>> {
           .getProducts(_currentPage, _pageSize),
     );
   }
+  //=======================Load More Product=============================//
 
   Future<void> loadMore() async {
     if (_isLoadingMore || state.value == null) return;
@@ -47,6 +49,7 @@ class ProductNotifier extends AsyncNotifier<List<Product>> {
     }
     _isLoadingMore = false;
   }
+  //======================= Search Products=============================//
 
   List<Product> search(String query) {
     final products = state.value ?? [];

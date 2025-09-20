@@ -11,6 +11,7 @@ class FavoritesNotifier extends StateNotifier<Set<String>> {
 
   FavoritesNotifier(this.prefs)
     : super(Set<String>.from(prefs.getStringList('favorites') ?? []));
+  //======================= Toggle Favourite Icon=============================//
 
   void toggle(String id) {
     final newFavorites = Set<String>.from(state);
@@ -23,9 +24,13 @@ class FavoritesNotifier extends StateNotifier<Set<String>> {
     prefs.setStringList('favorites', newFavorites.toList());
   }
 
+  //======================= Is Favourite=============================//
+
   bool isFavorite(String id) => state.contains(id);
+  //======================= Get Count=============================//
 
   int get count => state.length;
+  //======================= favourite List=============================//
 
   List<String> get favoritesList => state.toList();
 }
