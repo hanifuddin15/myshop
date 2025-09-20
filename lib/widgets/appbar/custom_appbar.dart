@@ -7,6 +7,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackPressed;
   final double fontSize;
   final Color? titleColor;
+  final List<Widget>? actions;
 
   const CustomAppBar({
     super.key,
@@ -15,6 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onBackPressed,
     this.fontSize = 30,
     this.titleColor,
+    this.actions,
   });
 
   @override
@@ -37,6 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               icon: const Icon(Icons.arrow_back_ios),
             )
           : null,
+      actions: actions,
     );
   }
 
