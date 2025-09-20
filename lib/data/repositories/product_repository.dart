@@ -14,8 +14,10 @@ class ProductRepositoryImpl implements ProductRepository {
   final SharedPreferences prefs;
   static const int _totalProducts = 85;
   static const String _cacheKey = 'products';
+  final AssetBundle bundle;
 
-  ProductRepositoryImpl(this.prefs);
+  ProductRepositoryImpl(this.prefs, {AssetBundle? bundle})
+    : bundle = bundle ?? rootBundle;
 
   @override
   Future<List<Product>> getProducts(int page, int pageSize) async {
