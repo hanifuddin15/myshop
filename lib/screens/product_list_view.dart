@@ -4,7 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_shop/provider/favourites_provider.dart';
 import 'package:my_shop/provider/product_provider.dart';
-import 'package:my_shop/provider/cart_provider.dart'; // Import the correct cartProvider
+import 'package:my_shop/provider/cart_provider.dart';
 import 'package:my_shop/widgets/no_data_widget.dart';
 import 'package:my_shop/widgets/shimmer/product_list_shimmer.dart';
 import '../widgets/product_card.dart';
@@ -80,7 +80,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
             children: [
               IconButton(
                 icon: const Icon(Icons.favorite, color: Colors.red),
-                onPressed: () => context.go('/favorites'),
+                onPressed: () => context.go('/favourite'),
               ),
               if (favoritesCount > 0)
                 Positioned(
@@ -102,16 +102,19 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
           Stack(
             alignment: Alignment.topRight,
             children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.shopping_cart,
-                  color: Colors.deepPurpleAccent,
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.shopping_cart,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onPressed: () => context.go('/cart'),
                 ),
-                onPressed: () => context.go('/cart'),
               ),
               if (cartCount > 0)
                 Positioned(
-                  right: 4,
+                  right: 14,
                   top: 4,
                   child: CircleAvatar(
                     radius: 10,
@@ -134,6 +137,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
+            //======================= Search Products=============================//
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -163,16 +167,21 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                 ),
               ),
             ),
+
             productsAsync.when(
               data: (products) {
                 final filteredProducts = ref
                     .read(productsProvider.notifier)
                     .search(searchQuery);
+                //=======================No Data Widget for Empty List=============================//
+
                 if (filteredProducts.isEmpty) {
                   return SliverFillRemaining(
                     child: NoDataWidget(message: 'No Products Found'),
                   );
                 }
+                //======================= Main Product List=============================//
+
                 return SliverPadding(
                   padding: const EdgeInsets.all(16.0),
                   sliver: SliverGrid(
