@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_shop/core/app_assets.dart';
 import 'package:my_shop/provider/cart_provider.dart';
 import 'package:my_shop/provider/favourites_provider.dart';
 import 'package:my_shop/provider/product_provider.dart';
 import 'package:my_shop/widgets/appbar/custom_appbar.dart';
+import 'package:my_shop/widgets/image/custom_network_image.dart';
 import 'package:my_shop/widgets/no_data_widget.dart';
 
 class FavoriteListScreen extends ConsumerWidget {
@@ -97,11 +99,12 @@ class FavoriteListScreen extends ConsumerWidget {
                         child: ListTile(
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              product.imageUrl,
+                            child: CustomNetworkImage(
+                              imageUrl: product.imageUrl,
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,
+                              errorImagePath: AppAssets.noProductImage,
                             ),
                           ),
                           title: Text(

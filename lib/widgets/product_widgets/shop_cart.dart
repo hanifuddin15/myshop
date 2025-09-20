@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_shop/core/app_assets.dart';
 import 'package:my_shop/models/products.dart';
 import 'package:my_shop/provider/cart_provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -47,7 +48,7 @@ class ShopCart extends ConsumerWidget {
                   width: 80,
                   height: 80,
                   color: Colors.grey.shade200,
-                  child: const Icon(Icons.error),
+                  child: Image.asset(AppAssets.noProductImage, fit: BoxFit.cover)
                 ),
               ),
             ),
