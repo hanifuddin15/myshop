@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:my_shop/models/products.dart';
+import 'package:my_shop/utility/snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../main.dart';  // For sharedPreferencesProvider
+import '../main.dart';
 
 final cartProvider = StateNotifierProvider<CartNotifier, Map<String, int>>(
   (ref) => CartNotifier(ref.watch(sharedPreferencesProvider)),
@@ -12,23 +14,33 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
   final SharedPreferences prefs;
 
   CartNotifier(this.prefs)
-      : super(
-          (jsonDecode(prefs.getString('cart') ?? '{}') as Map<String, dynamic>)
-              .map((key, value) => MapEntry(key, value as int)),
-        );
+    : super(
+        (jsonDecode(prefs.getString('cart') ?? '{}') as Map<String, dynamic>)
+            .map((key, value) => MapEntry(key, value as int)),
+      );
 
-  void addToCart(String id) {
-    final newCart = Map<String, int>.from(state);
-    newCart[id] = (newCart[id] ?? 0) + 1;
-    state = newCart;
-    prefs.setString('cart', jsonEncode(newCart));
+  void addToCart(String id, BuildContext context) {
+    try {
+      final newCart = Map<String, int>.from(state);
+      newCart[id] = (newCart[id] ?? 0) + 1;
+      state = newCart;
+      _saveCart();
+
+      showCustomSnackbar(context, message: 'Item added to cart!');
+    } catch (e) {
+      showCustomSnackbar(
+        context,
+        message: 'Failed to add item!',
+        isError: true,
+      );
+    }
   }
 
   void removeFromCart(String id) {
     final newCart = Map<String, int>.from(state);
     newCart.remove(id);
     state = newCart;
-    prefs.setString('cart', jsonEncode(newCart));
+    _saveCart();
   }
 
   void updateQuantity(String id, int quantity) {
@@ -39,23 +51,32 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
     final newCart = Map<String, int>.from(state);
     newCart[id] = quantity;
     state = newCart;
-    prefs.setString('cart', jsonEncode(newCart));
+    _saveCart();
   }
 
   double getTotal(List<Product> products) {
     return state.entries.fold<double>(0, (sum, entry) {
       final product = products.firstWhere(
         (p) => p.id == entry.key,
-        orElse: () => Product(id: '', name: '', price: 0, imageUrl: '', description: ''),
+        orElse: () => Product(
+          id: '',
+          name: '',
+          prevPrice: null,
+          presentPrice: 0,
+          imageUrl: '',
+          description: '',
+        ),
       );
-      return sum + product.price * entry.value;
+      return sum + product.presentPrice * entry.value;
     });
   }
 
   void clearCart() {
     state = {};
-    prefs.setString('cart', jsonEncode({}));
+    _saveCart();
   }
 
   bool get isEmpty => state.isEmpty;
+
+  void _saveCart() => prefs.setString('cart', jsonEncode(state));
 }
