@@ -3,6 +3,25 @@
 ## Overview
 This is a small Flutter application that simulates a shopping experience. It allows users to browse a product catalog, add/remove items to/from a cart, mark products as favorites, and complete a simple checkout flow. The app uses Riverpod for state management and follows the repository pattern for data handling.
 
+## Architecture overview
+lib/
+├── data/
+│   └── repositories/
+│       └── product_repository.dart
+├── models/
+│   └── products.dart
+├── provider/
+│   ├── cart_provider.dart
+│   ├── favourites_provider.dart
+│   └── product_provider.dart
+├── widgets/
+│   ├── buttons/
+│   ├── product_widgets/
+│   └── shimmer/
+├── product_details_view.dart
+├── product_list_view.dart
+└── main.dart
+
 ## Features
 ### Mid-Level
 
@@ -22,9 +41,9 @@ This is a small Flutter application that simulates a shopping experience. It all
 - Pass lint checks with no warnings.
 
 ## Tech Stack
-- **Flutter**: Latest stable version.
+- **Flutter**: Latest stable version(3.35.3 ).
 - **State Management**: Riverpod (`flutter_riverpod`).
-- **Models**: Freezed + JsonSerializable (if used; otherwise, standard Dart models).
+- **Models**:  standard Dart models.
 - **Persistence**: SharedPreferences.
 - **Networking**: `http` or `dio` (used for mock API simulation).
 - **Navigation**: `go_router` or Navigator 2.0.
