@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_shop/core/app_assets.dart';
 import 'package:my_shop/widgets/image/custom_network_image.dart';
 
 class ProductImageCard extends StatelessWidget {
@@ -32,6 +33,7 @@ class ProductImageCard extends StatelessWidget {
               height: 350.0,
               width: double.infinity,
               fit: BoxFit.cover,
+              errorImagePath: AppAssets.noProductImage,
             ),
           ),
         ),
