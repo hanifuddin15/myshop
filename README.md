@@ -41,7 +41,7 @@ Tools • Dart 3.9.2 • DevTools 2.48.0
 ## Screenshots
 
 ### Splash Screen
-![Splash Screen](assets/screenshots/home.png)
+![Splash Screen](assets/screenshots/splash.png)
 
 ### Product List
 ![Product List](assets/screenshots/product_list.png)

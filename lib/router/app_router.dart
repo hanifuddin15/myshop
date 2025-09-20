@@ -5,12 +5,17 @@ import 'package:my_shop/screens/check_out_view.dart';
 import 'package:my_shop/screens/favourite_list_view.dart';
 import 'package:my_shop/screens/product_details_view.dart';
 import 'package:my_shop/screens/product_list_view.dart';
+import 'package:my_shop/screens/splash_view.dart';
 import 'package:my_shop/screens/success_view.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: '/splash',
     routes: [
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: '/',
         builder: (context, state) => const ProductListScreen(),
