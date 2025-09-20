@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       leading: showBackButton
           ? IconButton(
-              onPressed: onBackPressed ?? () => context.pop(),
+              onPressed: onBackPressed ?? () => context.go('/'),
               icon: const Icon(Icons.arrow_back_ios),
             )
           : null,
