@@ -32,9 +32,9 @@ This is a small Flutter application that simulates a shopping experience. It all
 ## Data Model
 - **Product**: Includes fields like `id`, `name`, `presentPrice`, `prevPrice`, `imageUrl`, `description`.
 
-## Installation
+## Installation(Setup Steps )
 1. Clone the repository: https://github.com/hanifuddin15/myshop.git
-2. Flutter 3.35.3 • channel stable • https://github.com/flutter/flutter.git
+2. Install Flutter 3.35.3 • channel stable • https://github.com/flutter/flutter.git
 Tools • Dart 3.9.2 • DevTools 2.48.0
 
 
