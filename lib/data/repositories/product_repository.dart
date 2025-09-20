@@ -1,44 +1,60 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_shop/models/products.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ProductRepository {
-  Future<List<Product>> getProducts();
+  Future<List<Product>> getProducts(int page, int pageSize);
   Future<void> cacheProducts(List<Product> products);
+  int getTotalProducts();
 }
 
 class ProductRepositoryImpl implements ProductRepository {
   final SharedPreferences prefs;
+  static const int _totalProducts = 85; // Total number of products in JSON
+  static const String _cacheKey = 'products';
 
   ProductRepositoryImpl(this.prefs);
 
   @override
-  Future<List<Product>> getProducts() async {
+  Future<List<Product>> getProducts(int page, int pageSize) async {
     // Try cache first for offline startup
-    final cachedJson = prefs.getString('products');
+    final cachedJson = prefs.getString(_cacheKey);
     if (cachedJson != null) {
       final List<dynamic> jsonList = json.decode(cachedJson);
-      return jsonList.map((json) => Product.fromJson(json as Map<String, dynamic>)).toList();
+      final allProducts = jsonList
+          .map((json) => Product.fromJson(json as Map<String, dynamic>))
+          .toList();
+      final start = (page - 1) * pageSize;
+      final end = start + pageSize > allProducts.length
+          ? allProducts.length
+          : start + pageSize;
+      return allProducts.sublist(start, end);
     }
 
     try {
-      // Simulate network call with delay/error chance
       await Future.delayed(const Duration(seconds: 1));
       if (DateTime.now().second % 2 == 0) {
         throw http.ClientException('Mock network error');
       }
 
-      // Load from assets (mock API)
-      final jsonString = await rootBundle.loadString('assets/mock/products.json');
+      // Loading From Assets(Mock Api)
+      final jsonString = await rootBundle.loadString(
+        'assets/mock/products.json',
+      );
       final List<dynamic> jsonList = json.decode(jsonString);
-      final products = jsonList.map((json) => Product.fromJson(json as Map<String, dynamic>)).toList();
+      final allProducts = jsonList
+          .map((json) => Product.fromJson(json as Map<String, dynamic>))
+          .toList();
+      final start = (page - 1) * pageSize;
+      final end = start + pageSize > allProducts.length
+          ? allProducts.length
+          : start + pageSize;
+      final pageProducts = allProducts.sublist(start, end);
 
-      await cacheProducts(products);
-      return products;
+      await cacheProducts(allProducts); // Cache all products
+      return pageProducts;
     } on http.ClientException {
       rethrow;
     } catch (e) {
@@ -48,6 +64,12 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<void> cacheProducts(List<Product> products) async {
-    await prefs.setString('products', jsonEncode(products.map((p) => p.toJson()).toList()));
+    await prefs.setString(
+      _cacheKey,
+      jsonEncode(products.map((p) => p.toJson()).toList()),
+    );
   }
+
+  @override
+  int getTotalProducts() => _totalProducts;
 }
