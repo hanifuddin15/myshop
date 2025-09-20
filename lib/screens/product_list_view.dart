@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_shop/provider/favourites_provider.dart';
 import 'package:my_shop/provider/product_provider.dart';
+import 'package:my_shop/provider/cart_provider.dart'; // Import the correct cartProvider
 import 'package:my_shop/widgets/no_data_widget.dart';
 import 'package:my_shop/widgets/shimmer/product_list_shimmer.dart';
 import '../widgets/product_card.dart';
@@ -51,26 +53,76 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
     final productsAsync = ref.watch(productsProvider);
     final searchQuery = _searchController.text;
 
+    // Counters
+    final favoritesCount = ref.watch(favoritesProvider).length;
+    final cartCount = ref.watch(
+      cartProvider.select(
+        (cart) => cart.values.fold(0, (sum, qty) => sum + qty),
+      ),
+    ); // Total items in cart
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.colorScheme.surface,
+        elevation: 0,
         title: const Text(
           'My Shop',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 30,
+            fontSize: 26,
             color: Colors.deepPurpleAccent,
           ),
         ),
-        backgroundColor: theme.colorScheme.surface,
-        elevation: 0,
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.shopping_cart,
-              color: Colors.deepPurpleAccent,
-            ),
-            onPressed: () => context.go('/cart'),
-            color: theme.colorScheme.primary,
+          // Favorites Counter
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.favorite, color: Colors.red),
+                onPressed: () => context.go('/favorites'),
+              ),
+              if (favoritesCount > 0)
+                Positioned(
+                  right: 4,
+                  top: 4,
+                  child: CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Colors.redAccent,
+                    child: Text(
+                      favoritesCount.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+
+          // Cart Counter
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.shopping_cart,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onPressed: () => context.go('/cart'),
+              ),
+              if (cartCount > 0)
+                Positioned(
+                  right: 4,
+                  top: 4,
+                  child: CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Colors.deepPurple,
+                    child: Text(
+                      cartCount.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -191,7 +243,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: ProductListShimmer(),
+                  child: const ProductListShimmer(),
                 ),
               ),
           ],

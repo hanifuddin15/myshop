@@ -25,7 +25,6 @@ class CartNotifier extends StateNotifier<Map<String, int>> {
       newCart[id] = (newCart[id] ?? 0) + 1;
       state = newCart;
       _saveCart();
-
       showCustomSnackbar(context, message: 'Item added to cart!');
     } catch (e) {
       showCustomSnackbar(
