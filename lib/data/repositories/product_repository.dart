@@ -12,14 +12,13 @@ abstract class ProductRepository {
 
 class ProductRepositoryImpl implements ProductRepository {
   final SharedPreferences prefs;
-  static const int _totalProducts = 85; // Total number of products in JSON
+  static const int _totalProducts = 85;
   static const String _cacheKey = 'products';
 
   ProductRepositoryImpl(this.prefs);
 
   @override
   Future<List<Product>> getProducts(int page, int pageSize) async {
-    // Try cache first for offline startup
     final cachedJson = prefs.getString(_cacheKey);
     if (cachedJson != null) {
       final List<dynamic> jsonList = json.decode(cachedJson);
