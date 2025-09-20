@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_shop/core/app_assets.dart';
 import 'package:my_shop/models/products.dart';
 import 'package:my_shop/provider/favourites_provider.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:my_shop/widgets/image/custom_network_image.dart';
 
 class ProductCard extends ConsumerWidget {
   final Product product;
@@ -50,26 +51,12 @@ class ProductCard extends ConsumerWidget {
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(12),
                         ),
-                        child: Image.network(
-                          product.imageUrl,
+                        child: CustomNetworkImage(
+                          imageUrl: product.imageUrl,
+                          height: 200,
+                          width: double.infinity,
                           fit: BoxFit.cover,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Shimmer.fromColors(
-                              baseColor: theme.colorScheme.surfaceContainer,
-                              highlightColor: theme.colorScheme.surface,
-                              child: Container(
-                                color: theme.colorScheme.surfaceContainer,
-                              ),
-                            );
-                          },
-                          errorBuilder: (_, __, ___) => Container(
-                            color: theme.colorScheme.errorContainer,
-                            child: Icon(
-                              Icons.error,
-                              color: theme.colorScheme.error,
-                            ),
-                          ),
+                          errorImagePath: AppAssets.noProductImage,
                         ),
                       ),
                     ),
